@@ -29,7 +29,7 @@ app.use('/api/answers', userAnswerRouter);
 app.post('/api/singin', login);
 app.post('/api/singup', createUserController);
 app.use(cors({
-  origin: ["http://localhost:3001/",'http://localhost:3000/'],
+  origin: ["http://localhost:3001",'http://localhost:3000'],
   methods:['GET','POST',"PUT","UPDATE","PATCH"]
 }));
 const startApp = async () => {
