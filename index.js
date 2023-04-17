@@ -18,7 +18,7 @@ const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
 const app = express();
 app.use(cors({
-  origin: '*',
+  origin: ["http://localhost:3001/",'http://localhost:3000/'],
 }));
 
 app.use(express.json());
