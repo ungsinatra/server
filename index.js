@@ -20,11 +20,11 @@ const app = express();
 // app.use(cors({
   //   origin: process.env.ALLOWED_ORIGINS,
   // }));
-  app.use(function(req, res, next) {
+app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*") //Здесь устанавливаем '*'
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
-  })
+})
   
   app.use(express.json());
   app.use('/api/users', UserRouter);

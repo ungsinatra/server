@@ -38,6 +38,7 @@ module.exports.createUserController = async (req, res) => {
     const user = await createUser(userData);
     res.json(user);
   } catch (err) {
+    console.log(err)
     res.status(401).send({ message: err.message });
   }
 };
