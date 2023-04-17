@@ -35,8 +35,8 @@ app.use('/api/vacancies', VacancyRouter);
 app.use('/api/tests', TestsRouter);
 app.use('/api/answers', userAnswerRouter);
 
-app.post('/api/signin', login);
-app.post('/api/signup', createUserController);
+app.post('/api/singin', login);
+app.post('/api/singup', createUserController);
 const startApp = async () => {
   try {
     await mongoose.connect(DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
