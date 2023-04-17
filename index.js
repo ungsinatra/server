@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const UserRouter = require('./routers/userRouter');
 const CompanyRoute = require('./routers/companyRoute');
 // const checkUlr = require('./middlewares/doditionalUser.js');
@@ -16,14 +17,9 @@ dotenv.config();
 const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
 const app = express();
-// app.use(cors({
-//   origin: process.env.ALLOWED_ORIGINS,
-// }));
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); // Здесь устанавливаем '*'
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
+app.use(cors({
+  origin: '*',
+}));
 
 app.use(express.json());
 app.use('/api/users', UserRouter);
