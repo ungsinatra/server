@@ -1,0 +1,12 @@
+# Игнорируем временные файлы, папки и логи
+node_modules/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Игнорируем IDE и редакторы кода
+.idea/
+.vscode/
+*.code-workspace
