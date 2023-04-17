@@ -20,7 +20,7 @@ module.exports.login = async (req, res) => {
       throw new Error('Неверный email или пароль');
     }
     const token = jwt.sign({ _id: user._id }, 'some-secret-key');
-    res.json({ token, _id: user });
+    res.status(200).json({ token, _id: user });
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
@@ -34,7 +34,7 @@ module.exports.createUserController = async (req, res) => {
     }
     const userData = { ...req.body, password: hashPass };
     const user = await createUser(userData);
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
@@ -56,7 +56,7 @@ module.exports.getUserController = async (req, res) => {
       throw new BadReqError('Не указан ID');
     }
     const user = await getUser(req.params.id);
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
@@ -72,7 +72,7 @@ module.exports.updateUserController = async (req, res) => {
       throw new BadReqError('Переданы не все поля!');
     }
     const user = await updateUser(req.params.id, req.body);
-    res.json(user);
+    res.status(200).json(user);
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
@@ -81,7 +81,7 @@ module.exports.updateUserController = async (req, res) => {
 module.exports.removeUserController = async (req, res) => {
   try {
     const removedUser = await removeUser(req.params.id);
-    res.json(removedUser);
+    res.status(200).json(removedUser);
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
@@ -90,7 +90,7 @@ module.exports.removeUserController = async (req, res) => {
 module.exports.upadeUserPartController = async (req, res) => {
   try {
     const updatedUser = await upadePartUser(req.params.id, req.body);
-    res.json(updatedUser);
+    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(401).send({ message: err.message });
   }
