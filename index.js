@@ -17,14 +17,6 @@ dotenv.config();
 const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
 const app = express();
-<<<<<<< HEAD
-
-=======
-app.use(cors({
-  origin: ["http://localhost:3001/",'http://localhost:3000/'],
-}));
->>>>>>> 3ca6fb9b8f144c67ac231bb97c6d30838fc43f24
-
 app.use(express.json());
 app.use('/api/users', UserRouter);
 // app.use(auth)
