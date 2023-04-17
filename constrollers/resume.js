@@ -6,7 +6,7 @@ module.exports.createResume = async (req, res) => {
     const resume = await Resume.create(req.body);
     res.status(201).json({ message: 'Резюме создан!', resume });
   } catch (error) {
-    throw new BadReqError(error.message);
+    res.status(404).json({ message: error.message });
   }
 };
 
