@@ -30,7 +30,7 @@ module.exports.createUserController = async (req, res) => {
     const hashPass = await bcrypt.hash(req.body.password, 10);
     const userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
-      throw new ConflictError('Адрес email уже зарегистрирован');
+      throw new Error('Адрес email уже зарегистрирован');
     }
     const userData = { ...req.body, password: hashPass };
     const user = await createUser(userData);
