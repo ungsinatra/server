@@ -17,9 +17,7 @@ dotenv.config();
 const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
 const app = express();
-app.use(cors({
-  origin: '*',
-}));
+
 
 app.use(express.json());
 app.use('/api/users', UserRouter);
@@ -32,6 +30,10 @@ app.use('/api/answers', userAnswerRouter);
 
 app.post('/api/singin', login);
 app.post('/api/singup', createUserController);
+app.use(cors({
+  origin: ["http://localhost:3001/",'http://localhost:3000/'],
+  methods:['GET','POST',"PUT","UPDATE","PATCH"]
+}));
 const startApp = async () => {
   try {
     await mongoose.connect(DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
