@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
 const dotenv = require('dotenv');
 const UserRouter = require('./routers/userRouter');
 const CompanyRoute = require('./routers/companyRoute');
@@ -18,17 +17,17 @@ const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
 const app = express();
 // app.use(cors({
-  //   origin: process.env.ALLOWED_ORIGINS,
-  // }));
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*") //Здесь устанавливаем '*'
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-    next()
-})
-  
-  app.use(express.json());
-  app.use('/api/users', UserRouter);
-  // app.use(auth)
+//   origin: process.env.ALLOWED_ORIGINS,
+// }));
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); // Здесь устанавливаем '*'
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+app.use(express.json());
+app.use('/api/users', UserRouter);
+// app.use(auth)
 app.use('/api/companies', CompanyRoute);
 app.use('/api/resumes', resumeRouter);
 app.use('/api/vacancies', VacancyRouter);

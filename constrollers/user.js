@@ -10,7 +10,6 @@ const {
 } = require('../services/userService');
 const User = require('../models/user');
 const BadReqError = require('../Errors/BadReqError');
-const NotFoundError = require('../Errors/NotFoundError');
 const ConflictError = require('../Errors/ConflictError');
 
 module.exports.login = async (req, res) => {
@@ -23,7 +22,6 @@ module.exports.login = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, 'some-secret-key');
     res.json({ token, _id: user });
   } catch (err) {
-    console.log(err)
     res.status(401).send({ message: err.message });
   }
 };
@@ -38,7 +36,6 @@ module.exports.createUserController = async (req, res) => {
     const user = await createUser(userData);
     res.json(user);
   } catch (err) {
-    console.log(err)
     res.status(401).send({ message: err.message });
   }
 };
@@ -48,8 +45,7 @@ module.exports.getUsersController = async (req, res) => {
     const users = await getUsers(req.body);
     res.status(200).json(users);
   } catch (e) {
-    res.status(401).send({ message: err.message });
-    
+    res.status(401).send({ message: e.message });
   }
 };
 
@@ -96,6 +92,6 @@ module.exports.upadeUserPartController = async (req, res) => {
     const updatedUser = await upadePartUser(req.params.id, req.body);
     res.json(updatedUser);
   } catch (err) {
-    res.status(401).send({ message: err.message });  
+    res.status(401).send({ message: err.message });
   }
 };

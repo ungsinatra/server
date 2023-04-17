@@ -1,5 +1,4 @@
 const Resume = require('../models/resume');
-const BadReqError = require('../Errors/BadReqError');
 
 module.exports.createResume = async (req, res) => {
   try {
