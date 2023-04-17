@@ -13,6 +13,11 @@ const userAnswerRouter = require('./routers/userAnswerRouter');
 const { createUserController, login } = require('./constrollers/user');
 
 dotenv.config();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*") //Здесь устанавливаем '*'
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  next()
+})
 
 const DB_URL = process.env.DB_HOST;
 const PORT = process.env.PORT || 4000;
