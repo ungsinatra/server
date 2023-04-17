@@ -21,8 +21,9 @@ module.exports.login = async (req, res) => {
       throw new Error('Неверный email или пароль');
     }
     const token = jwt.sign({ _id: user._id }, 'some-secret-key');
-    res.json({ token, _id: user._id });
+    res.json({ token, _id: user });
   } catch (err) {
+    console.log(err)
     res.status(401).send({ message: err.message });
   }
 };
@@ -33,18 +34,11 @@ module.exports.createUserController = async (req, res) => {
     if (userExists) {
       throw new ConflictError('Адрес email уже зарегистрирован');
     }
-
     const userData = { ...req.body, password: hashPass };
     const user = await createUser(userData);
     res.json(user);
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(400).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
-      res.status(404).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
+    res.status(401).send({ message: err.message });
   }
 };
 
@@ -53,7 +47,8 @@ module.exports.getUsersController = async (req, res) => {
     const users = await getUsers(req.body);
     res.status(200).json(users);
   } catch (e) {
-    res.status(500).json(e);
+    res.status(401).send({ message: err.message });
+    
   }
 };
 
@@ -66,13 +61,7 @@ module.exports.getUserController = async (req, res) => {
     const user = await getUser(req.params.id);
     res.json(user);
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(400).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
-      res.status(404).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
+    res.status(401).send({ message: err.message });
   }
 };
 
@@ -88,13 +77,7 @@ module.exports.updateUserController = async (req, res) => {
     const user = await updateUser(req.params.id, req.body);
     res.json(user);
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(400).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
-      res.status(404).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
+    res.status(401).send({ message: err.message });
   }
 };
 
@@ -103,13 +86,7 @@ module.exports.removeUserController = async (req, res) => {
     const removedUser = await removeUser(req.params.id);
     res.json(removedUser);
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(400).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
-      res.status(404).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
+    res.status(401).send({ message: err.message });
   }
 };
 
@@ -118,12 +95,6 @@ module.exports.upadeUserPartController = async (req, res) => {
     const updatedUser = await upadePartUser(req.params.id, req.body);
     res.json(updatedUser);
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(400).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
-      res.status(404).json({ error: err.message });
-    } else {
-      res.status(500).json({ error: 'Something went wrong!' });
-    }
+    res.status(401).send({ message: err.message });  
   }
 };

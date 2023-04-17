@@ -6,7 +6,7 @@ const {
 const router = express.Router();
 
 router.get('/', getUsersController);
-router.get('/me', getUserController);
+router.get('/:id', getUserController);
 router.put('/:id', updateUserController);
 router.patch('/:id', upadeUserPartController);
 router.delete('/:id', removeUserController);

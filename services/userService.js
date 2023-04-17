@@ -10,9 +10,8 @@ module.exports.createUser = async (user) => {
   } catch (error) {
     if (error.name === 'CastError') {
       throw new BadReqError('Не корректные данные! ');
-    } else {
-      throw error;
-    }
+    } 
+    throw new Error(err.message);
   }
 };
 
@@ -31,9 +30,9 @@ module.exports.getUser = async (_id) => {
   } catch (error) {
     if (error.name === 'CastError') {
       throw new BadReqError(`Неверный формат id '${_id}'`);
-    } else {
-      throw error;
     }
+    throw new Error(err.message);
+
   }
 };
 
@@ -44,9 +43,9 @@ module.exports.updateUser = async (_id, updates) => {
   } catch (error) {
     if (error.name === 'CastError') {
       throw new NotFoundError(`Пользователь с id ${_id} не найден!`);
-    } else {
-      throw error;
-    }
+    } 
+    throw new Error(err.message);
+
   }
 };
 
@@ -57,9 +56,9 @@ module.exports.removeUser = async (_id) => {
   } catch (err) {
     if (err.name === 'CastError') {
       throw new NotFoundError(`Пользователь с id ${_id} не найден!`);
-    } else {
-      throw err;
-    }
+    } 
+    throw new Error(err.message);
+
   }
 };
 
@@ -83,6 +82,6 @@ module.exports.upadePartUser = async (_id, userData) => {
     const newUserData = await User.save();
     return newUserData;
   } catch (err) {
-    throw err;
+    throw new Error(err.message);
   }
 };
