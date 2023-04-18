@@ -53,7 +53,7 @@ module.exports.upadePartUser = async (_id, userData) => {
   // eslint-disable-next-line no-useless-catch
   try {
     const updates = userData;
-    const allowedUpdates = ['name', 'lastName', 'email', 'password', 'phone', 'gender', 'age'];
+    const allowedUpdates = ['name', 'lastName', 'email', 'password', 'phone', 'gender', 'age','resume'];
     const isValidUpdate = Object.keys(updates).every((update) => allowedUpdates.includes(update));
     const user = await User.findById(_id);
     if (!user) {

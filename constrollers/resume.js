@@ -1,11 +1,25 @@
+const { ConflictError } = require('../Errors/ConflictError');
 const Resume = require('../models/resume');
-
+const {updateUser} = require('../services/userService');
 module.exports.createResume = async (req, res) => {
   try {
+    const newResume = req.body;
+    console.log(newResume);
+    debugger
+    const resumeExists = await Resume.findOne({ownerId: req.body.ownerId });
+    if(!resumeExists){
+      throw new ConflictError('У Пользовтеля уже зарегистрировано резюме');
+    }
     const resume = await Resume.create(req.body);
-    res.status(201).json({ message: 'Резюме создан!', resume });
+    const createdUserRusume = await updateUser(newResume.ownerId,{resume:resume._id})
+    console.log(createdUserRusume);
+    res.status(201).json({ message: 'Резюме создан!', resume,createdUserRusume });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    if(error instanceof ConflictError){
+      res.status(error.statusCode).json({message:error.message});
+    }else{
+      res.status(500).json({ message: error.message });
+    }
   }
 };
 
