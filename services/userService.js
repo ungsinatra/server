@@ -1,7 +1,7 @@
 const User = require('../models/user');
-const BadReqError = require('../Errors/BadReqError');
-const ConflictError = require('../Errors/ConflictError');
-const NotFoundError = require('../Errors/NotFoundError');
+const {BadReqError} = require('../Errors/BadReqError');
+const {ConflictError} = require('../Errors/ConflictError');
+const {NotFoundError} = require('../Errors/NotFoundError');
 
 module.exports.createUser = async (user) => {
   try {
@@ -34,7 +34,7 @@ module.exports.updateUser = async (_id, updates) => {
     return updatedUser;
   } catch (error) {
     if (error.name === 'CastError') {
-      throw new NotFoundError(`Пользователь с id ${_id} не найден!`);
+      throw new Error(`Пользователь с id ${_id} не найден!`);
     }
     throw new Error(error.message);
   }
@@ -45,10 +45,7 @@ module.exports.removeUser = async (_id) => {
     const removedUser = await User.findByIdAndRemove(_id);
     return removedUser;
   } catch (err) {
-    if (err.name === 'CastError') {
-      throw new NotFoundError(`Пользователь с id ${_id} не найден!`);
-    }
-    throw new Error(err.message);
+    throw new ConflictError(`Пользователь с id ${_id} не найден!`);
   }
 };
 

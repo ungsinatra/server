@@ -9,34 +9,55 @@ const {
   getUsers,
 } = require('../services/userService');
 const User = require('../models/user');
-const BadReqError = require('../Errors/BadReqError');
-const ConflictError = require('../Errors/ConflictError');
+const { BadReqError } = require('../Errors/BadReqError');
+const { ConflictError } = require('../Errors/ConflictError');
 
 module.exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    if (!password) {
+      throw new BadReqError('email или пароль не передан');
+    }
     const user = await User.findUserByCredentials(email, password);
     if (!user) {
-      throw new Error('Неверный email или пароль');
+      throw new BadReqError('Неверный email или пароль');
     }
     const token = jwt.sign({ _id: user._id }, 'some-secret-key');
     res.status(200).json({ token, _id: user });
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    if (err instanceof BadReqError) {
+      res.status(401).send({ message: err.message });
+      return
+    } else {
+      res.status(500).json(err.message);
+    }
   }
 };
 module.exports.createUserController = async (req, res) => {
   try {
-    const hashPass = await bcrypt.hash(req.body.password, 10);
+    if (!req.body.password || !req.body.email) {
+      throw new BadReqError('Пароль или Email не передан!');
+    }
     const userExists = await User.findOne({ email: req.body.email });
+    const hashPass = await bcrypt.hash(req.body.password, 10);
     if (userExists) {
-      throw new Error('Адрес email уже зарегистрирован');
+      throw new ConflictError('Адрес email уже зарегистрирован');
     }
     const userData = { ...req.body, password: hashPass };
     const user = await createUser(userData);
-    res.status(200).json(user);
+    res.status(201).json(user);
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    if (err instanceof BadReqError) {
+      res.status(401).send({ message: err.message });
+      return
+    }
+    else if (err instanceof ConflictError) {
+      res.status(409).send({ message: err.message });
+      return 
+    }
+    else {
+      res.status(500).send({ message: err.message });
+    }
   }
 };
 
@@ -52,13 +73,16 @@ module.exports.getUsersController = async (req, res) => {
 // FIX
 module.exports.getUserController = async (req, res) => {
   try {
-    if (!req.params.id) {
-      throw new BadReqError('Не указан ID');
-    }
-    const user = await getUser(req.params.id);
+    console.log(req.user);
+    const user = await getUser(req.user._id);
     res.status(200).json(user);
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    if (err instanceof BadReqError) {
+      res.status(err.statusCode).send({ message: err.message });
+      return
+    } else {
+      res.status(500).send({ message: err.message });
+    }
   }
 };
 
@@ -74,7 +98,11 @@ module.exports.updateUserController = async (req, res) => {
     const user = await updateUser(req.params.id, req.body);
     res.status(200).json(user);
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    if(err instanceof BadReqError){
+      res.status(err.statusCode).send({ message: err.message });
+    }else{
+      res.status(500).send({ message: err.message });
+    }
   }
 };
 
@@ -83,7 +111,7 @@ module.exports.removeUserController = async (req, res) => {
     const removedUser = await removeUser(req.params.id);
     res.status(200).json(removedUser);
   } catch (err) {
-    res.status(401).send({ message: err.message });
+    res.status(err.statusCode).send({ message: err.message });
   }
 };
 
