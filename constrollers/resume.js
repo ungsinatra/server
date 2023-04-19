@@ -26,7 +26,7 @@ module.exports.getResumes = async (req, res) => {
   try {
     const resumes = await Resume.find().populate('ownerId');
     const resumeWithUserArr = resumes.map(resume => {
-      return { resume, user: resume.ownerId };
+      return { resume };
     });
     console.log(resumeWithUserArr);
     res.status(200).json(resumeWithUserArr);
@@ -35,7 +35,7 @@ module.exports.getResumes = async (req, res) => {
   }
 };
 
-module.exports.getResumeById = async (req, res) => {
+module.exports.getResumeById = async (req, res) => {  
   try {
     const { id } = req.params;
     const resume = await Resume.findById(id);
