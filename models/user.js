@@ -83,5 +83,5 @@ userSchema.statics.findUserByCredentials = function (email, password) {
     });
 };
 
-const user = mongoose.model('user', userSchema);
+const user = mongoose.model('User', userSchema);
 module.exports = user;
