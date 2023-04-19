@@ -25,11 +25,7 @@ module.exports.createResume = async (req, res) => {
 module.exports.getResumes = async (req, res) => {
   try {
     const resumes = await Resume.find().populate('ownerId');
-    const resumeWithUserArr = resumes.map(resume => {
-      return { resume };
-    });
-    console.log(resumeWithUserArr);
-    res.status(200).json(resumeWithUserArr);
+    res.status(200).json(resumes);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
