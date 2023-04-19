@@ -1,9 +1,14 @@
 const mongoose = require('mongoose');
 
+const answerSchema = mongoose.Schema({
+  id: { type: Number, required: true },
+  answer: { type: String, required: true },
+});
+
 const questionSchema = mongoose.Schema({
-  text: String,
-  options: [String],
-  answer: String,
+  quation: String,
+  type:{type:String,enum:["choice", "text"],required:true},
+  answers: [answerSchema],
 });
 
 const testSchema = mongoose.Schema({
@@ -22,6 +27,11 @@ const testSchema = mongoose.Schema({
     ref: 'Company',
     required: true,
   },
+  vacancyId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Vacancy",
+    required:true
+  }
 });
 const test = mongoose.model('Tests', testSchema);
 module.exports = test;
