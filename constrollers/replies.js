@@ -5,6 +5,7 @@ const {BadReqError} = require ('../Errors/BadReqError');
 module.exports.createReplyController = async (req, res, next) => {
   try {
     const {answerData,replyData} = req.body;
+    console.log(req.body)
     const userAnswerData = await userAnswer.create(answerData);
     if(!userAnswerData){
          throw new BadReqError('Ответы не переданы!');  
@@ -18,8 +19,10 @@ module.exports.createReplyController = async (req, res, next) => {
     console.log(error.message)
     if(error instanceof BadReqError){
         res.status(error.statusCode).json({message:error.message})
+    }else{
+      res.status(500).json({message:error.message});
+      // next(error);
     }
-    next(error);
   }
 };
 
