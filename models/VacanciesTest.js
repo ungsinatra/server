@@ -6,7 +6,7 @@ const answerSchema = mongoose.Schema({
 });
 
 const questionSchema = mongoose.Schema({
-  quation: String,
+  question: String,
   type:{type:String,enum:["choice", "text"],required:true},
   answers: [answerSchema],
 });

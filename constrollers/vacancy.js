@@ -1,7 +1,7 @@
 const Vacancy = require('../models/vacancy');
 const VacanciesTest = require('../models/VacanciesTest');
-const BadReqError = require('../Errors/BadReqError');
-const NotFoundError = require('../Errors/NotFoundError');
+const {BadReqError} = require('../Errors/BadReqError');
+const {NotFoundError} = require('../Errors/NotFoundError');
 
 module.exports.createVacancyController = async (req, res) => {
   try {
