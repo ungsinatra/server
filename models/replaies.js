@@ -22,7 +22,11 @@ const repliesSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-    }
+    },
+    createdDate: {
+        type: Date,
+        default: Date.now,
+      },
 })
 const replaies = mongoose.model('Relpies', repliesSchema);
 module.exports = replaies;

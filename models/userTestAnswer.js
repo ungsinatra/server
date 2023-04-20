@@ -14,8 +14,7 @@ const userTestAnswerSchema = mongoose.Schema({
   answers: [
     {
       question: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Question',
+        type: String,
         required: true,
       },
       answer: {
@@ -24,6 +23,10 @@ const userTestAnswerSchema = mongoose.Schema({
       },
     },
   ],
+  createdDate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 const userAnswer = mongoose.model('UserAnswerTest', userTestAnswerSchema);
 module.exports = userAnswer;
