@@ -1,12 +1,24 @@
 const Replies = require("../models/replaies");
-
+const userAnswer = require("../models/userTestAnswer");
+const {BadReqError} = require ('../Errors/BadReqError');
 // C - Create
 module.exports.createReplyController = async (req, res, next) => {
+
   try {
-    const reply = await Replies.create(req.body);
-    console.log(reply);
+    const {answerData,replyData} = req.body;
+    const userAnswerData = await userAnswer.create(answerData);
+    if(!userAnswer){
+         throw new BadReqError('Ответы не переданы!');  
+    }
+    const reply = await Replies.create({
+        replyData,
+        userTestAnswer:userAnswerData._id
+    });
     res.status(201).json(reply);
   } catch (error) {
+    if(error instanceof BadReqError){
+        res.status(error.statusCode).json({message:error.message})
+    }
     next(error);
   }
 };

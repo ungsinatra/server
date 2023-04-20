@@ -10,7 +10,6 @@ module.exports.createVacancyController = async (req, res) => {
     if (!test) {
       throw new BadReqError('Ошибка тесты где??');
     }
-
     const createdVacancy = await Vacancy.create({
       ...vacancyData,
       testId: test._id,
