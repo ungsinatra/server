@@ -9,6 +9,7 @@ const CompanyRoute = require('./routers/companyRoute');
 const resumeRouter = require('./routers/remuseRouter');
 const VacancyRouter = require('./routers/vacancyRouter');
 const TestsRouter = require('./routers/testsRouter');
+const RepliesRouter  = require('./routers/repliesRouter')
 const userAnswerRouter = require('./routers/userAnswerRouter');
 const { createUserController, login } = require('./constrollers/user');
 
@@ -28,8 +29,10 @@ app.use('/api/resumes', resumeRouter);
 app.use('/api/vacancies', VacancyRouter);
 app.use('/api/tests', TestsRouter);
 app.use('/api/answers', userAnswerRouter);
+app.use('/api/replies', RepliesRouter);
 app.post('/api/singin', login);
 app.post('/api/singup', createUserController);
+
 const startApp = async () => {
   try {
     await mongoose.connect(DB_URL, { useUnifiedTopology: true, useNewUrlParser: true });
