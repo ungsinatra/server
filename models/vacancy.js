@@ -1,5 +1,13 @@
 const mongoose = require('mongoose');
 
+const replyUsers = mongoose.Schema({
+  userId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"User",
+    require:true
+  }
+})
+
 const vacancySchema = mongoose.Schema({
   title: { type: String, required: true },
   price: { type: Number, required: true },
@@ -10,11 +18,28 @@ const vacancySchema = mongoose.Schema({
   benefits: [{ type: String }],
   date: { type: Date, required: true },
   direction: { type: String, required: true },
+  schedule:{type:String,require:true},
+  graid:{
+    type: String,
+    enum: ['junior', 'middle','senior','lead'],
+    required: false,
+  },
   testId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tests',
     required: true,
   },
+  repliesUsers:[replyUsers]
 });
+vacancySchema.statics.updateVacancyProps = async function (_id,data) {
+  try {
+    const result = await this.findByIdAndUpdate(_id, data, { new: true });
+    return result;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
 const vacancy = mongoose.model('Vacancy', vacancySchema);
 module.exports = vacancy;

@@ -1,11 +1,18 @@
 const Replies = require("../models/replaies");
 const userAnswer = require("../models/userTestAnswer");
+const  vacancy = require('../models/vacancy')
 const {BadReqError} = require ('../Errors/BadReqError');
+const {ConflictError} = require('../Errors/ConflictError');
 // C - Create
 module.exports.createReplyController = async (req, res, next) => {
   try {
-    const {answerData,replyData} = req.body;
-    console.log(req.body)
+    const { answerData, replyData } = req.body;
+    console.log(replyData)
+    const foundVacancy = await vacancy.findById(replyData.vacancyId)
+    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...foundVacancy.repliesUsers,replyData.userId]})
+    if(!vacancyUpdate){
+      throw new ConflictError('Вакансия не обновлена');  
+    }
     const userAnswerData = await userAnswer.create(answerData);
     if(!userAnswerData){
          throw new BadReqError('Ответы не переданы!');  
@@ -14,12 +21,15 @@ module.exports.createReplyController = async (req, res, next) => {
         ...replyData,
         userTestAnswer:userAnswerData._id
     });
-    res.status(201).json({message:'Отклик осущетвлен'});
+    res.status(201).json({message:'Отклик осуществлен'});
   } catch (error) {
     console.log(error.message)
     if(error instanceof BadReqError){
         res.status(error.statusCode).json({message:error.message})
-    }else{
+    }else if(error instanceof ConflictError){
+      res.status(error.statusCode).json({message:error.message});
+    }
+    else{
       res.status(500).json({message:error.message});
       // next(error);
     }
