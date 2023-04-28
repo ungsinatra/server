@@ -21,7 +21,7 @@ module.exports.createVacancyController = async (req, res) => {
       company:createCompany._id,
     });
     const updateTest = await VacanciesTest.findByIdAndUpdate(test._id,{vacancyId:createdVacancy._id},{new:true})
-    const updatedUser = await updateUser(vacancyData.userId,{vacancy:createdVacancy._id});
+    const updatedUser = await updateUser(company.userId,{vacancy:createdVacancy._id});
     console.log(updatedUser);
     if (!createdVacancy) {
       throw new BadReqError('Ошибка при создании вакансии');
