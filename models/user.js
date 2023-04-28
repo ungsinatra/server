@@ -64,7 +64,10 @@ const userSchema = mongoose.Schema({
     require: false,
     ref: 'Resume',
   },
-
+  vacancy:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'Vacancy',
+  }
 });
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')

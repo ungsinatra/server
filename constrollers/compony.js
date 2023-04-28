@@ -4,8 +4,7 @@ const NotFoundError = require('../Errors/NotFoundError');
 
 module.exports.createCompany = async (req, res, next) => {
   try {
-    const { name, email, password } = req.body;
-    const company = await Company.create({ name, email, password });
+    const company = await Company.create(req.body);
     res.json({ message: 'Компания успешно создана', company });
   } catch (error) {
     if (error.code === 11000) {

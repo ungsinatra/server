@@ -16,12 +16,12 @@ const vacancySchema = mongoose.Schema({
   responsibilities: [{ type: String }],
   qualifications: [{ type: String }],
   benefits: [{ type: String }],
-  date: { type: Date, required: true },
+  date: { type: Date, required: true,default: Date.now  },
   direction: { type: String, required: true },
-  schedule:{type:String,require:true},
+  occupied:{type:String,require:true},
   graid:{
     type: String,
-    enum: ['junior', 'middle','senior','lead'],
+    enum: ['intern','junior', 'middle','senior','lead'],
     required: false,
   },
   testId: {

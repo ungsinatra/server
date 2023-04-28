@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const answerSchema = mongoose.Schema({
-  id: { type: Number, required: true },
-  answer: { type: String, required: true },
+  _id: { type: Number, required: true },
+  answer: { type: String, required: false },
 });
 
 const questionSchema = mongoose.Schema({
@@ -30,7 +30,6 @@ const testSchema = mongoose.Schema({
   vacancyId:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"Vacancy",
-    required:true
   }
 });
 const test = mongoose.model('Tests', testSchema);

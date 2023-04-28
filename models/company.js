@@ -8,25 +8,17 @@ const companySchema = new Schema({
     maxLength: 50,
     require: true,
   },
-  email: {
+  about: {
     type: String,
-    unique: true,
-    validate: {
-      validator: (value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(value);
-      },
-      message: 'Некорректный email',
-    },
-  },
-  vacancies: [{ type: Schema.Types.ObjectId, ref: 'Vacancy' }],
-
-  password: {
-    type: String,
-    maxLength: 50,
-    minLength: 6,
+    maxLength: 200,
     require: true,
   },
+  userId:{
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  vacancies: [{ type: Schema.Types.ObjectId, ref: 'Vacancy' }],
 });
 
 const company = mongoose.model('Company', companySchema);

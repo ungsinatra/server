@@ -9,7 +9,7 @@ module.exports.createReplyController = async (req, res, next) => {
     const { answerData, replyData } = req.body;
     console.log(replyData)
     const foundVacancy = await vacancy.findById(replyData.vacancyId)
-    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...foundVacancy.repliesUsers,replyData.userId]})
+    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...foundVacancy.repliesUsers,replyData.userId]});
     if(!vacancyUpdate){
       throw new ConflictError('Вакансия не обновлена');  
     }
