@@ -33,6 +33,7 @@ const vacancySchema = mongoose.Schema({
 });
 vacancySchema.statics.updateVacancyProps = async function (_id,data) {
   try {
+    console.log(data);
     const result = await this.findByIdAndUpdate(_id, data, { new: true });
     return result;
   } catch (error) {
