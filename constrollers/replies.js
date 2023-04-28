@@ -7,7 +7,8 @@ const {ConflictError} = require('../Errors/ConflictError');
 module.exports.createReplyController = async (req, res, next) => {
   try {
     const { answerData, replyData } = req.body;
-    const foundVacancy = await vacancy.findById(replyData.vacancyId)
+    const foundVacancy = await vacancy.findById(replyData.vacancyId);
+    
     const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...foundVacancy.repliesUsers,{_id:replyData.userId}]});
     if(!vacancyUpdate){
       throw new ConflictError('Вакансия не обновлена');  

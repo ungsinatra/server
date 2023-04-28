@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const answerSchema = mongoose.Schema({
-  _id: { type: Number, required: true },
+  _id: { type: String, required: true },
   answer: { type: String, required: false },
 });
 
