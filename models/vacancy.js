@@ -32,11 +32,16 @@ const vacancySchema = mongoose.Schema({
   repliesUsers:[replyUsers]
 });
 vacancySchema.statics.updateVacancyProps = async function (_id,data) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    console.log(data);
-    const result = await this.findByIdAndUpdate(_id, data, { new: true });
-    return result;
+    const updatedVacancy = await Vacancy.findByIdAndUpdate(vacancyId, data, { new: true, session });
+    await session.commitTransaction();
+    session.endSession();
+    return updatedVacancy;
   } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
     console.log(error.message);
     return null;
   }
