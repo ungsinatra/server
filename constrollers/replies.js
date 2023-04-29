@@ -8,8 +8,8 @@ module.exports.createReplyController = async (req, res, next) => {
   try {
     const { answerData, replyData } = req.body;
     const foundVacancy = await vacancy.findById(replyData.vacancyId);
-    const repliesUsers = foundVacancy.repliesUsers || [];
-    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...repliesUsers,{_id:replyData.userId}]});
+    const repliesUsers = foundVacancy.repliesUsers? []:foundVacancy.repliesUsers;
+    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...repliesUsers,{userId:replyData.userId}]});
     if(!vacancyUpdate){
       throw new ConflictError('Вакансия не обновлена');  
     }
@@ -30,6 +30,7 @@ module.exports.createReplyController = async (req, res, next) => {
       res.status(error.statusCode).json({message:error.message});
     }
     else{
+      console.log(err.message);
       res.status(500).json({message:error.message});
       // next(error);
     }

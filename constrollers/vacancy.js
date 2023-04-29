@@ -7,34 +7,36 @@ const {NotFoundError} = require('../Errors/NotFoundError');
 
 module.exports.createVacancyController = async (req, res) => {
   try {
-    const { vacancyData, testData,company } = req.body;
-    const createCompany = await Company.create(company)
-    console.log(createCompany);
-    const test = await VacanciesTest.create({...testData,company:createCompany._id});
+    const { vacancyData, testData, company } = req.body;
+    
+    const createCompany = await Company.create(company);
+    const test = await VacanciesTest.create({ ...testData, company: createCompany._id });
+
     if (!test) {
-      throw new BadReqError('Ошибка тесты где??');
+      throw new BadReqError('Ошибка: тест не создан');
     }
-    console.log(test);
+
     const createdVacancy = await Vacancy.create({
       ...vacancyData,
       testId: test._id,
-      company:createCompany._id,
+      company: createCompany._id,
+      repliesUsers: []
     });
-    const updateTest = await VacanciesTest.findByIdAndUpdate(test._id,{vacancyId:createdVacancy._id},{new:true})
-    const updatedUser = await updateUser(company.userId,{vacancy:createdVacancy._id});
-    console.log(updatedUser);
-    if (!createdVacancy) {
-      throw new BadReqError('Ошибка при создании вакансии');
-    }
 
-    res.status(201).json({createdVacancy,updateTest});
+    const updateTest = await VacanciesTest.findByIdAndUpdate(
+      test._id,
+      { vacancyId: createdVacancy._id },
+      { new: true }
+    );
+
+    const updatedUser = await updateUser(company.userId, { vacancy: createdVacancy._id });
+
+    res.status(201).json({ createdVacancy, updateTest });
   } catch (err) {
-    if (err instanceof BadReqError) {
-      res.status(err.statusCode).json({ error: err.message });
-    } else if (err instanceof NotFoundError) {
+    if (err instanceof BadReqError || err instanceof NotFoundError) {
       res.status(err.statusCode).json({ error: err.message });
     } else {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
   }
 };

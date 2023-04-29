@@ -4,7 +4,8 @@ const replyUsers = mongoose.Schema({
   userId:{
     type:mongoose.Schema.Types.ObjectId,
     ref:"User",
-    require:false
+    default: [],
+    index: { unique: false }
   }
 })
 
@@ -29,19 +30,16 @@ const vacancySchema = mongoose.Schema({
     ref: 'Tests',
     required: true,
   },
-  repliesUsers:[replyUsers]
+  repliesUsers:{
+    type: [String],
+    required: false
+  }
 });
 vacancySchema.statics.updateVacancyProps = async function (_id,data) {
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
-    const updatedVacancy = await Vacancy.findByIdAndUpdate(vacancyId, data, { new: true, session });
-    await session.commitTransaction();
-    session.endSession();
+    const updatedVacancy = await this.findByIdAndUpdate(_id, data, { new: true, session });
     return updatedVacancy;
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
     console.log(error.message);
     return null;
   }
