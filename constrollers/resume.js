@@ -6,7 +6,8 @@ module.exports.createResume = async (req, res) => {
   try {
     const newResume = req.body;
     const resumeExists = await Resume.findOne({ownerId: req.body.ownerId });
-    if(!resumeExists){
+    console.log(resumeExists);
+    if(resumeExists){
       throw new ConflictError('У Пользовтеля уже зарегистрировано резюме');
     }
     const resume = await Resume.create(req.body);

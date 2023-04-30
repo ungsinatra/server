@@ -59,6 +59,9 @@ const userSchema = mongoose.Schema({
       message: 'Вам должно быть больше 16 лет!', // когда validator вернёт false, будет использовано это сообщение
     },
   },
+  photo:{
+    type: Buffer,
+  },
   resume: {
     type: mongoose.Schema.Types.ObjectId,
     require: false,

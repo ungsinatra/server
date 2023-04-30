@@ -24,6 +24,17 @@ const workSchema = new Schema({
 });
 
 const resumeSchema = new Schema({
+  name:{
+    type: String,
+    maxlength: 100,
+  },
+  lastName:{
+    type: String,
+    maxlength: 100,
+  },
+  age:{
+    type: Number,
+  },
   skills: {
     type: [String],
     minlength: 2,
