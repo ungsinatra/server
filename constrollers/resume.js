@@ -1,6 +1,6 @@
 const { ConflictError } = require('../Errors/ConflictError');
 const Resume = require('../models/resume');
-const User = require('../models/user')
+const User = require('../models/user');
 const {updateUser} = require('../services/userService');
 module.exports.createResume = async (req, res) => {
   try {
@@ -55,6 +55,8 @@ module.exports.updateResume = async (req, res) => {
 module.exports.deleteResume = async (req, res) => {
   try {
     const { id } = req.params;
+    const findResume = await Resume.findById(id);
+    const updatedUser = updateUser(findResume.ownerId,{resume:''},{new:true});
     const resume = await Resume.findByIdAndDelete(id);
     res.status(200).json({ message: 'Резюме удален!', resume });
   } catch (error) {
