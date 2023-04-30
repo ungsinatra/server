@@ -4,12 +4,12 @@ const  vacancy = require('../models/vacancy')
 const {BadReqError} = require ('../Errors/BadReqError');
 const {ConflictError} = require('../Errors/ConflictError');
 // C - Create
+
 module.exports.createReplyController = async (req, res, next) => {
   try {
     const { answerData, replyData } = req.body;
-    const foundVacancy = await vacancy.findById(replyData.vacancyId);
-    const repliesUsers = foundVacancy.repliesUsers? []:foundVacancy.repliesUsers;
-    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId,{repliesUsers:[...repliesUsers,{userId:replyData.userId}]});
+    const vacancyUpdate = await vacancy.updateVacancyProps(replyData.vacancyId, [replyData.userId] );
+    console.log(vacancyUpdate);
     if(!vacancyUpdate){
       throw new ConflictError('Вакансия не обновлена');  
     }
@@ -21,7 +21,7 @@ module.exports.createReplyController = async (req, res, next) => {
         ...replyData,
         userTestAnswer:userAnswerData._id
     });
-    res.status(201).json({message:'Отклик осуществлен'});
+    res.status(201).json({message:'Отклик осуществлен',vacancyUpdate});
   } catch (error) {
     console.log(error.message)
     if(error instanceof BadReqError){
@@ -30,9 +30,8 @@ module.exports.createReplyController = async (req, res, next) => {
       res.status(error.statusCode).json({message:error.message});
     }
     else{
-      console.log(err.message);
+      console.log(error.message);
       res.status(500).json({message:error.message});
-      // next(error);
     }
   }
 };

@@ -37,7 +37,10 @@ const vacancySchema = mongoose.Schema({
 });
 vacancySchema.statics.updateVacancyProps = async function (_id,data) {
   try {
-    const updatedVacancy = await this.findByIdAndUpdate(_id, data, { new: true, session });
+    const findVacancy = await this.findById(_id);
+    const updatedVacancy = await this.findByIdAndUpdate(_id, {repliesUsers: [...findVacancy.repliesUsers,...data] }, { new: true });
+    console.log(updatedVacancy);
+    console.log(updatedVacancy);
     return updatedVacancy;
   } catch (error) {
     console.log(error.message);
