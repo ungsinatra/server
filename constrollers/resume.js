@@ -56,8 +56,11 @@ module.exports.deleteResume = async (req, res) => {
   try {
     const { id } = req.params;
     const findResume = await Resume.findById(id);
-    const updatedUser = updateUser(findResume.ownerId,{resume:''},{new:true});
     const resume = await Resume.findByIdAndDelete(id);
+    // const updatedUser = updateUser(findResume.ownerId,{resume:''},{new:true});
+    const user = await User.findById(findResume.ownerId);
+    user.resume = '';
+    const updatedUser = await user.save({ new: true });
     res.status(200).json({ message: 'Резюме удален!', resume });
   } catch (error) {
     res.status(400).json({ message: error.message });
