@@ -1,9 +1,20 @@
 const mongoose = require('mongoose');
 
+const answerSchema = mongoose.Schema({
+  _id: { type: String, required: true },
+  answer: { type: String, required: false },
+});
+
+const questionSchema = mongoose.Schema({
+  question: String,
+  type: { type: String, enum: ["choice", "text", "code"], required: true },
+  answers: [answerSchema],
+});
 const userTestAnswerSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    uniqe: true,
     required: true,
   },
   testId: {
@@ -11,6 +22,7 @@ const userTestAnswerSchema = mongoose.Schema({
     ref: 'Tests',
     required: true,
   },
+  // testQuations: [questionSchema],
   answers: [
     {
       question: {

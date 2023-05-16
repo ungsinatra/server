@@ -7,7 +7,7 @@ const answerSchema = mongoose.Schema({
 
 const questionSchema = mongoose.Schema({
   question: String,
-  type:{type:String,enum:["choice", "text"],required:true},
+  type:{type:String,enum:["choice", "text","code"],required:true},
   answers: [answerSchema],
 });
 

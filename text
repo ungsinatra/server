@@ -1,0 +1,96 @@
+// const EventTypeConnection = (data, client) => {
+//   const { token } = data;
+//   jwt.verify(token, 'some-secret-key', (err, decoded) => {
+//     if (err) {
+//       ws.send(JSON.stringify({ type: 'error', message: 'Invalid Token' }))
+//     } else {
+//       const { _id } = decoded;
+//       Chats.findUserChats(_id)
+//         .then(chats => {
+//           console.log(chats);
+//           client.send(JSON.stringify({ type: 'chats', chats }))
+//         })
+//         .catch(error => {
+//           console.error(error);
+//         });
+//     }
+//   });
+//   return;
+// }
+// const EventTypeMessage = (data, client) => {
+//   const { message, currentChatId } = data;
+//   console.log(data)
+//   Chats.findById(currentChatId)
+//     .then(chat => {
+//       if (chat) {
+//         chat.messages.push(message);
+//         chat.type = 'private'
+//         chat.lastMessage = message.text;
+//         return chat.save();
+//       }
+//       else {
+//         const newChat = new Chats({
+//           _id: currentChatId,
+//           type: 'private',
+//           messages: [message],
+//           members: [],
+//           lastMessage: message.text
+//         });
+//         return newChat.save();
+//       }
+//     })
+//     .then(updatedChat => {
+//       console.log(`Updated chat with ID ${updatedChat}`);
+//       const chats = updatedChat;
+//       client.send(JSON.stringify({ type: 'chats-message', chats }));
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     });
+//   return
+// }
+
+// // app.ws('/', (ws, req) => {
+// //   ws.on('message', (message) => {
+// //     const reqData = JSON.parse(message);
+// //     const { type } = reqData
+// //     console.log(reqData);
+// //     switch (type) {
+// //       case 'auth':
+// //         console.log('auth', reqData);
+// //         wsOnConnectionHandler(ws, reqData)
+// //         break;
+// //       case 'chat':
+// //         console.log('chat'  , reqData);
+// //         broadCastMessage(ws, reqData);
+// //       default:
+// //         break;
+// //     }
+// //   });
+// //   ws.on('close', (message) => {
+// //     console.log('Соединение разорвано!')
+// //   })
+// // })
+
+
+// const wsOnConnectionHandler = (ws, message) => {
+//   ws.id = message.sessionId;
+//   console.log(`Подключился ${message}`);
+//   broadCastConnection(ws, message)
+// }
+// const broadCastMessage = (ws, message) => {
+//   aWss.clients.forEach(client => {
+//     console.log('client -id', client.id);
+//     if (client.id = message.sessionId) {
+//       EventTypeMessage(message, client);
+//     }
+//   })
+// }
+// const broadCastConnection = (ws, message) => {
+//   aWss.clients.forEach(client => {
+//     console.log('client -id', client.id);
+//     if (client.id = message.sessionId) {
+//       EventTypeConnection(message, client);
+//     }
+//   })
+// }

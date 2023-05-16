@@ -53,7 +53,7 @@ module.exports.createUserController = async (req, res) => {
     }
     else if (err instanceof ConflictError) {
       res.status(409).send({ message: err.message });
-      return 
+      return
     }
     else {
       res.status(500).send({ message: err.message });
@@ -98,9 +98,9 @@ module.exports.updateUserController = async (req, res) => {
     const user = await updateUser(req.params.id, req.body);
     res.status(200).json(user);
   } catch (err) {
-    if(err instanceof BadReqError){
+    if (err instanceof BadReqError) {
       res.status(err.statusCode).send({ message: err.message });
-    }else{
+    } else {
       res.status(500).send({ message: err.message });
     }
   }

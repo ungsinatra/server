@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const replyUsers = mongoose.Schema({
-  userId:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:"User",
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
     default: [],
     index: { unique: false }
   }
@@ -17,28 +17,38 @@ const vacancySchema = mongoose.Schema({
   responsibilities: [{ type: String }],
   qualifications: [{ type: String }],
   benefits: [{ type: String }],
-  date: { type: Date, required: true,default: Date.now  },
+  date: { type: Date, required: true, default: Date.now },
   direction: { type: String, required: true },
-  occupied:{type:String,require:true},
-  graid:{
+  occupied: { type: String, require: true },
+  graid: {
     type: String,
-    enum: ['intern','junior', 'middle','senior','lead'],
+    enum: ['intern', 'junior', 'middle', 'senior', 'lead'],
     required: false,
   },
+  about: {
+    type: String,
+    maxlength: 500
+  },
+  createrId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  }
+  ,
   testId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tests',
     required: true,
   },
-  repliesUsers:{
+  repliesUsers: {
     type: [String],
     required: false
   }
 });
-vacancySchema.statics.updateVacancyProps = async function (_id,data) {
+vacancySchema.statics.updateVacancyProps = async function (_id, data) {
   try {
     const findVacancy = await this.findById(_id);
-    const updatedVacancy = await this.findByIdAndUpdate(_id, {repliesUsers: [...findVacancy.repliesUsers,...data] }, { new: true });
+    const updatedVacancy = await this.findByIdAndUpdate(_id, { repliesUsers: [...findVacancy.repliesUsers, ...data] }, { new: true });
     console.log(updatedVacancy);
     console.log(updatedVacancy);
     return updatedVacancy;
